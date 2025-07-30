@@ -1,9 +1,12 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { SignInButton,SignedIn, SignedOut,SignOutButton, useSession } from '@clerk/nextjs'
+import { api } from "../../convex/_generated/api";
+import { useMutation } from "convex/react";
 
 export default function Home() {
-  const session = useSession()
+  const session = useSession();
+  const createFile = useMutation(api.files.createFile);
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -17,10 +20,15 @@ export default function Home() {
             <Button className="bg-blue-500 text-white px-4 py-2 rounded">Sign In</Button>
           </SignInButton>
           </SignedOut>
-        <Button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => {}}>
+        <Button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => {
+          createFile({
+            name: "New File",
+          });
+        }}>
           Upload File
         </Button>
       </main>
     </div>
   );
 }
+
